@@ -1,0 +1,5 @@
+Usei o SQL Server no projeto, para otimizar o tempo, criei uma
+tabela com os estados e as siglas dos mesmos e importei para a 
+tabela UF.
+
+1 - necessário importar a tabela estados para a tabela UF 

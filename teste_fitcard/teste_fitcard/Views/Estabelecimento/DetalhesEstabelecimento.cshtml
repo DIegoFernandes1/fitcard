@@ -1,0 +1,538 @@
+﻿@{
+    /**/
+
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/StyleSheet.css" rel="stylesheet" type="text/css" />
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        //FUNÇÃO LOAD NAS CIDADES BASEADO NA ESCOLHA DO ESTADO
+        $(document).ready(function () {
+            $("#UF").change(function () {
+                var IdCidade = $(this).children("option:selected").val();
+                var URLPost = "/Estabelecimento/SelecionaCidades/" + IdCidade;
+
+                $.ajax(
+                    {
+                        url: URLPost,
+                        dataType: "json",
+                        type: "Post",
+
+                        success: function (data) {
+                            var opcao;
+                            $("#idCidade").empty();
+                            $(data).each(function (i) {
+                                if (data.length > 0) {
+                                    opcao = "<option value=" + data[i].idCidade + ">" + data[i].Municipio + "</option>";
+                                    $("#idCidade").append(opcao);
+                                }
+                            });
+                        }
+                    });
+            });
+        });
+
+
+
+        //FUNÇÃO MASCARA CADASTRO
+        function formatar(mascara, documento) {
+            var i = documento.value.length;
+            var saida = mascara.substring(0, 1);
+            var texto = mascara.substring(i)
+
+            if (texto.substring(0, 1) != saida) {
+                documento.value += texto.substring(0, 1);
+            }
+
+        }
+
+        //FUNÇÕES TROCA VISUALIZAÇÃO
+        function isCadastrar() {
+            document.getElementById("Detalhes").style.display = 'none';
+            document.getElementById("Alterar").style.display = 'block';
+        }
+
+        function isAlterar() {
+            document.getElementById("Detalhes").style.display = 'block';
+            document.getElementById("Alterar").style.display = 'none';
+        }
+
+        function isContato() {
+            if (document.getElementById("Alterar").style.display = 'none') {
+                document.getElementById("CadastrarContato").style.display = 'block';
+            }
+        }
+
+        function isNotContato() {
+            document.getElementById("Alterar").style.display = 'block'
+            document.getElementById("CadastrarContato").style.display = 'none';
+        }
+
+        //FUNÇÃO VERIFICA CNPJ É VALIDO
+        function is_cnpj() {
+            var cnpj = document.getElementById("CNPJ").value;
+            cnpj = cnpj.replace(/[^\d]+/g, '');
+
+            if (!cnpj.length < 14) {
+                var DV1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+                var DV2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+                var resto, result;
+
+                //CALCULO DO 1° DIGITO VERIFICADOR
+                resto = CalcularCNPJ(cnpj, DV1, 12);
+
+                //--------------------- 1° DIGITO VERIFICADOR MENOR QUE 2 --------------------------
+                if (resto < 2) {                                                                 //-
+                    if (cnpj[12] == 0) {                                                         //-
+                        //CALCULO DO 2° DIGITO VERIFICADOR                                       //-
+                        resto = CalcularCNPJ(cnpj, DV2, 13);                                     //-
+                        if (resto < 2) {                                                         //-
+                            if (cnpj[13] == 0) {                                                 //-
+                                document.getElementById("CNPJ").style.borderColor = "green";     //-
+                                document.getElementById("btAlterarEst").disabled = false;        //-
+                            } else {                                                             //-
+                                document.getElementById("CNPJ").style.borderColor = "red";       //-
+                                document.getElementById("btAlterarEst").disabled = true;         //-
+                            }                                                                    //-
+                        } else {                                                                 //-
+                            result = 11 - resto;                                                 //-
+                            if (cnpj[13] == result) {                                            //-
+                                document.getElementById("CNPJ").style.borderColor = "green";     //-
+                                document.getElementById("btAlterarEst").disabled = false;        //-
+                            } else {                                                             //-
+                                document.getElementById("CNPJ").style.borderColor = "red";       //-
+                                document.getElementById("btAlterarEst").disabled = true;         //-
+                            }                                                                    //-
+                        }                                                                        //-
+                    } else {                                                                     //-
+                        document.getElementById("CNPJ").style.borderColor = "red";               //-
+                        document.getElementById("btAlterarEst").disabled = true;                 //-
+                    }                                                                            //-
+                    //---------------------- 1° DIGITO VERIFICADOR MAIOR QUE 2 ---------------------
+                } else {                                                                         //-
+                    result = 11 - resto;                                                         //-
+                    if (cnpj[12] == result) {                                                    //-
+                        //CALCULO DO 2° DIGITO VERIFICADOR                                       //-
+                        resto = CalcularCNPJ(cnpj, DV2, 13);                                     //-
+                        if (resto < 2) {                                                         //-
+                            if (cnpj[13] == 0) {                                                 //-
+                                document.getElementById("CNPJ").style.borderColor = "green";     //-
+                                document.getElementById("btAlterarEst").disabled = false;        //-
+                            } else {                                                             //-
+                                document.getElementById("CNPJ").style.borderColor = "red";       //-
+                                document.getElementById("btAlterarEst").disabled = true;         //-
+                            }                                                                    //-
+                        } else {                                                                 //-
+                            result = 11 - resto;                                                 //-
+                            if (cnpj[13] == result) {                                            //-
+                                document.getElementById("CNPJ").style.borderColor = "green";     //-
+                                document.getElementById("btAlterarEst").disabled = false;        //-
+                            } else {                                                             //-
+                                document.getElementById("CNPJ").style.borderColor = "red";       //-
+                                document.getElementById("btAlterarEst").disabled = true;         //-
+                            }                                                                    //-
+                        }                                                                        //-
+                    } else {                                                                     //-
+                        document.getElementById("CNPJ").style.borderColor = "red";               //-
+                        document.getElementById("btAlterarEst").disabled = true;                 //-
+                    }                                                                            //-
+                }                                                                                //-
+                //----------------------------------------------------------------------------------
+            } else {
+                document.getElementById("CNPJ").style.borderColor = "red";
+                document.getElementById("btAlterarEst").disabled = true;
+            }
+        }
+
+        //FUNÇÃO COMPLEMENTAR DO VERIFICA CNPJ
+        function CalcularCNPJ(cnpj, DV, indice) {
+            //CALCULO DO DIGITO VERIFICADOR
+            var soma = 0, resto;
+            for (var i = 0; i < indice; i++) {
+                soma += cnpj[i] * DV[i];
+            }
+            resto = soma % 11;
+            return resto;
+        }
+
+        //FUNÇÃO CONFERIR CATEGORIA
+        function ConfereCategoria(idCategoria) {
+            if (idCategoria.options[idCategoria.selectedIndex].value == "1") {
+                Contatos = document.getElementById("Contatos").rows.length;
+                if (Contatos == 1) {
+                    document.getElementById("btAlterarEst").disabled = true;
+                    alert("Necessário um meio de contato para concluir a alteração.");
+                }
+            }else {
+                document.getElementById("btAlterarEst").disabled = false;
+            }
+
+        }
+    </script>
+
+    <title>Detalhes Estabelecimento</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <img src="~/imagens/estabelecimento.png" class="img-responsive center-block" />
+                <div class="apresentacao">
+                    <p>Detalhes do estabelecimento</p>
+                </div>
+            </div>
+
+            @*COMEÇO DIV DETALHES*@
+            <div id="Detalhes">
+                <div class="col-lg-8">
+                    <div>
+                        <div class="form-group">
+                            <label for="RazaoSocial">Razão social</label>
+                            <input id="RazaoSocial" name="RazaoSocial" type="text" class="form-control TamanhoInput" value="@(ViewBag.Detalhes.razaoSocial)" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="NomeFantasia">Nome fantasia</label>
+                            <input id="NomeFantasia" name="NomeFantasia" type="text" class="form-control TamanhoInput" value="@(ViewBag.Detalhes.nomeFantasia)" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="CNPJ">CNPJ</label>
+                            <input name="CNPJ" class="form-control TamanhoInput" type="text" value="@(ViewBag.Detalhes.CNPJ)" readonly />
+                        </div>
+
+                        <div>
+                            <table class="table table-striped table-bordered table-hover table-condensed" id="Contatos">
+                                <thead>
+                                    <tr class="success">
+                                        <th>E-mail</th>
+                                        <th>DDD</th>
+                                        <th>Numero</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                                @foreach (var C in ViewBag.Contatos)
+                                {
+                                    <tr>
+                                        @if (C.Email == "")
+                                        {
+                                            <td>Sem E-mail</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@(C.Email)</td>
+                                        }
+
+                                        @if (C.DDD == "")
+                                        {
+                                            <td>Sem DDD</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@(C.DDD)</td>
+                                        }
+
+                                        @if (C.Numero == "")
+                                        {
+                                            <td>Sem Numero</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@(C.Numero)</td>
+                                        }
+
+
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <label for="DataCadastro">Data cadastro</label>
+                            <p id="DataCadastro">@(ViewBag.Detalhes.dataCadastro)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="DataCadastro">Categoria</label>
+                        <select id="categoria" name="categoria" class="form-control" readonly="readonly">
+                            <option value="@(ViewBag.Detalhes.idCategoria)" selected>@(ViewBag.Detalhes.nomeCategoria)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="DataCadastro">Status</label>
+                        <select id="Status" name="status" class="form-control" readonly="readonly">
+                            <option value="@(ViewBag.Detalhes.idStatus)" selected>@(ViewBag.Detalhes.nomeStatus)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="logradouro">Logradouro</label>
+                        <input id="logradouro" name="logradouro" class="form-control TamanhoInput" type="text" value="@(ViewBag.Detalhes.Logradouro)" readonly />
+                    </div>
+                </div>
+
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label for="UF">UF</label>
+                        <select class="form-control" readonly="readonly">
+                            <option selected>@(ViewBag.Detalhes.UF)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="agencia">Agência</label>
+                        <input class="form-control" id="agencia" name="agencia" type="text" value="@(ViewBag.Detalhes.Agencia)" readonly />
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-info" id="btAlterar" onclick="isCadastrar();">Alterar</button>
+                    </div>
+                </div>
+
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label for="cidade">Cidade</label>
+                        <input class="form-control" type="text" value="@(ViewBag.Detalhes.Municipio)" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="conta">Conta</label>
+                        <input class="form-control" id="conta" name="conta" type="text" value="@(ViewBag.Detalhes.Conta)" readonly />
+                    </div>
+                    <div class="form-group">
+                        <a href="/Estabelecimento/ListarEstabelecimentos"><button type="button" name="enviar" value="Voltar" class="btn btn-warning">Voltar </button></a>
+                    </div>
+                </div>
+            </div>
+            @*FIM DIV DETALHES*@
+
+            @*COMEÇO DIV ALTERAR*@
+            <div id="Alterar" style="display:none;">
+                <form method="post" action="/Estabelecimento/AlterarEstabelecimento/@(ViewBag.Detalhes.idEstabelecimento)">
+                    <div class="col-lg-8">
+                        @if (ViewBag.Erro == true)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @(ViewBag.Mensagem)
+                            </div>
+                        }
+
+                        @if (ViewBag.Alerta == true)
+                        {
+                            <div class="alert alert-warning" role="alert">
+                                @(ViewBag.Mensagem)
+                            </div>
+                        }
+
+                        @if (ViewBag.Sucesso == true)
+                        {
+                            <div class="alert alert-success" role="alert">
+                                @(ViewBag.Mensagem)
+                            </div>
+                        }
+
+                        <div>
+                            <div class="form-group">
+                                <label for="RazaoSocial">Razão social*</label>
+                                <input id="RazaoSocial" name="RazaoSocial" type="text" class="form-control TamanhoInput" value="@(ViewBag.Detalhes.razaoSocial)" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="NomeFantasia">Nome fantasia</label>
+                                <input id="NomeFantasia" name="NomeFantasia" type="text" class="form-control TamanhoInput" value="@(ViewBag.Detalhes.nomeFantasia)" />
+                            </div>
+                            <div class="form-group">
+                                <label for="CNPJ">CNPJ*</label>
+                                <input id="CNPJ" name="CNPJ" class="form-control TamanhoInput" type="text" value="@(ViewBag.Detalhes.CNPJ)" required maxlength="18" onkeyup="formatar('##.###.###/####-##', this)" onchange="is_cnpj()" />
+                            </div>
+                            <div>
+                                <table class="table table-striped table-bordered table-hover table-condensed">
+                                    <thead>
+                                        <tr class="success">
+                                            <th>E-mail</th>
+                                            <th>DDD</th>
+                                            <th>Numero</th>
+                                            <th>
+                                                <i style="font-size: 16pt; color:green;" class="glyphicon glyphicon-plus-sign" title="Adicionar" onclick="isContato()"></i>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                    @foreach (var C in ViewBag.Contatos)
+                                    {
+                                        <tr>
+                                            @if (C.Email == "")
+                                            {
+                                                <td>Sem E-mail</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@(C.Email)</td>
+                                            }
+
+                                            @if (C.DDD == "")
+                                            {
+                                                <td>Sem DDD</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@(C.DDD)</td>
+                                            }
+
+                                            @if (C.Numero == "")
+                                            {
+                                                <td>Sem Numero</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@(C.Numero)</td>
+                                            }
+
+                                            <td>
+                                                <a href="~/Contato/AlterarContato/@(C.idContato)">
+                                                    <i style="font-size: 16pt;" class="glyphicon glyphicon-pencil" title="Alterar"></i>
+                                                </a>
+                                            </td>
+
+                                            <td>
+                                                <a href="~/Contato/RemoverContato/@(C.idContato)">
+                                                    <i style="font-size: 16pt; color:red;" class="glyphicon glyphicon-remove" title="Excluir"></i>
+                                                </a>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                            <div class="form-group">
+                                <label for="DataAlteracao">Data de alteração</label>
+                                <p id="DataAlteracao">@(ViewBag.Data)</p>
+                            </div>
+
+                            <div class="alert alert-warning" role="alert">
+                                Campos com * são obrigatórios.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="DataCadastro">Categoria*</label>
+                            <select id="categoria" name="categoria" class="form-control" onchange="ConfereCategoria(this)">
+                                <option value="@(ViewBag.Detalhes.idCategoria)" selected>@(ViewBag.Detalhes.nomeCategoria)</option>
+                                @foreach (var C in ViewBag.ListaCategoria)
+                                {
+                                    <option value="@(C.idCategoria)">@(C.nomeCategoria)</option>
+
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="DataCadastro">Status*</label>
+                            <select id="Status" name="status" class="form-control">
+                                <option value="@(ViewBag.Detalhes.idStatus)" selected>@(ViewBag.Detalhes.nomeStatus)</option>
+                                @foreach (var S in ViewBag.ListaStatus)
+                                {
+                                    <option value="@(S.idStatus)">@(S.nomeStatus)</option>
+
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="logradouro">Logradouro</label>
+                            <input id="logradouro" name="logradouro" class="form-control TamanhoInput" type="text" value="@(ViewBag.Detalhes.Logradouro)" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="UF">UF*</label>
+                            <select id="UF" name="UF" class="form-control">
+                                <option value="@(ViewBag.Detalhes.idUF)" selected>@(ViewBag.Detalhes.UF)</option>
+                                @foreach (var UF in ViewBag.ListaEstados)
+                                {
+                                    <option value="@(UF.idUF)">@(UF.UF_ + '(' + UF.Sigla + ')')</option>
+
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="agencia">Agência</label>
+                            <input class="form-control" id="agencia" name="agencia" type="text" value="@(ViewBag.Detalhes.Agencia)" maxlength="5" onkeyup="formatar('###-#', this)" />
+                        </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-success" id="btAlterarEst" type="submit">Alterar</button>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="cidade">Cidade*</label>
+                            <select id="idCidade" name="idCidade" class="form-control">
+                                <option value="@(ViewBag.Detalhes.idCidade)" selected>@(ViewBag.Detalhes.Municipio)</option>
+                            </select>
+                            <input hidden name="idEndereco" value="@(ViewBag.Detalhes.idEndereco)" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="conta">Conta</label>
+                            <input class="form-control" id="conta" name="conta" type="text" value="@(ViewBag.Detalhes.Conta)" maxlength="8" onkeyup="formatar('##.###-#', this)" />
+                        </div>
+                    </div>
+                </form>
+                <div class="form-group">
+                    <button class="btn btn-warning" id="btCancelar" onclick="isAlterar();">Cancelar</button>
+                </div>
+            </div>
+            @*FIM DIV ALTERAÇÃO*@
+
+            @*COMEÇO DIV CADASTRAR CONTATO*@
+            <div id="CadastrarContato" style="display:none;">
+                <form method="post" action="~/Contato/CadastrarContato">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <label for="email">E-mail</label>
+                                <input id="email" name="email" class="form-control TamanhoInput" type="text" placeholder="Digite o E-mail" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label for="ddd">DDD</label>
+                                <input class="form-control" id="ddd" name="ddd" type="text" placeholder="Digite o DDD" maxlength="2" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="telefone">Telefone</label>
+                                <input class="form-control" id="telefone" name="telefone" type="text" placeholder="Digite o Numero" maxlength="9" onkeyup="formatar('####-####', this)" />
+                                <input name="id_Estabelecimento" type="text" value="@(ViewBag.Detalhes.idEstabelecimento)" hidden="hidden" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-2">
+                            <button class="btn btn-success" type="submit">Cadastrar</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="form-group row col-lg-2">
+                    <button class="btn btn-warning" onclick="isNotContato()">Cancelar</button>
+                </div>
+            </div>
+            @*FIM DIV CADASTRAR CONTATO*@
+        </div>
+    </div>
+</body>
+</html>

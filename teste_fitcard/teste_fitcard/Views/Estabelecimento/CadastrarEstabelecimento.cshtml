@@ -1,0 +1,357 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/StyleSheet.css" rel="stylesheet" type="text/css" />
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        //FUNÇÃO LOAD NAS CIDADES BASEADO NA ESCOLHA DO ESTADO
+        $(document).ready(function () {
+            $("#uf").change(function () {
+                var IdCidade = $(this).children("option:selected").val();
+                var URLPost = "/Estabelecimento/SelecionaCidades/" + IdCidade;
+
+                $.ajax(
+                    {
+                        url: URLPost,
+                        dataType: "json",
+                        type: "Post",
+
+                        success: function (data) {
+                            var opcao;
+                            $("#cidade").empty();
+                            $(data).each(function (i) {
+                                if (data.length > 0) {
+                                    opcao = "<option value=" + data[i].idCidade + ">" + data[i].Municipio + "</option>";
+                                    $("#cidade").append(opcao);
+                                }
+                                else {
+                                    alert(data);
+                                    opcao = "<option selected>Sem Cidade</option>";
+                                    $("#cidade").append(opcao);
+                                }
+                            });
+                        }
+                    });
+            });
+        });
+
+        //FUNÇÃO MASCARA CADASTRO
+        function formatar(mascara, documento) {
+            var i = documento.value.length;
+            var saida = mascara.substring(0, 1);
+            var texto = mascara.substring(i)
+
+            if (texto.substring(0, 1) != saida) {
+                documento.value += texto.substring(0, 1);
+            }
+
+        }
+
+        //FUNÇÃO CONFERIR CATEGORIA
+        function ConfereCategoria(idCategoria) {
+
+            if (idCategoria == 0) {
+                idCategoria = document.getElementById("categoria");
+            }
+
+            if (idCategoria.options[idCategoria.selectedIndex].value == "1") {
+                document.getElementById("ddd").setAttribute("required", "");
+                document.getElementById("telefone").setAttribute("required", "");
+
+                if (document.getElementById("ddd").value == "" || document.getElementById("telefone").value == "") {
+                    document.getElementById("ddd").style.borderColor = "red";
+                    document.getElementById("telefone").style.borderColor = "red";
+                    return 0;
+                } else {
+                    ddd.style.borderColor = "green";
+                    telefone.style.borderColor = "green";
+                    return 1;
+                }
+            }
+            else {
+                document.getElementById("ddd").removeAttribute("required", "");
+                document.getElementById("telefone").removeAttribute("required", "");
+                ddd.style.borderColor = "";
+                telefone.style.borderColor = "";
+
+                if (idCategoria.options[idCategoria.selectedIndex].value == "Selecione uma Categoria") {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            }
+        }
+
+        //FUNÇÃO VERIFICA CNPJ É VALIDO
+        function is_cnpj() {
+            var cnpj = document.getElementById("CNPJ").value;
+            cnpj = cnpj.replace(/[^\d]+/g, '');
+
+            if (!cnpj.length < 14) {
+                var DV1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+                var DV2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+                var resto, result;
+
+                //CALCULO DO 1° DIGITO VERIFICADOR
+                resto = CalcularCNPJ(cnpj, DV1, 12);
+
+                //--------------------- 1° DIGITO VERIFICADOR MENOR QUE 2 --------------------------
+                if (resto < 2) {                                                                 //-
+                    if (cnpj[12] == 0) {                                                         //-
+                        //CALCULO DO 2° DIGITO VERIFICADOR                                       //-
+                        resto = CalcularCNPJ(cnpj, DV2, 13);                                     //-
+                        if (resto < 2) {                                                         //-
+                            if (cnpj[13] == 0) {                                                 //-
+                                document.getElementById("CNPJ").style.borderColor = "green";     //-
+                                document.getElementById("btCadastrar").disabled = false;         //-
+                            } else {                                                             //-
+                                document.getElementById("CNPJ").style.borderColor = "red";       //-
+                                document.getElementById("btCadastrar").disabled = true;          //-
+                            }                                                                    //-
+                        } else {                                                                 //-
+                            result = 11 - resto;                                                 //-
+                            if (cnpj[13] == result) {                                            //-
+                                document.getElementById("CNPJ").style.borderColor = "green";     //-
+                                document.getElementById("btCadastrar").disabled = false;         //-
+                            } else {                                                             //-
+                                document.getElementById("CNPJ").style.borderColor = "red";       //-
+                                document.getElementById("btCadastrar").disabled = true;          //-
+                            }                                                                    //-
+                        }                                                                        //-
+                    } else {                                                                     //-
+                        document.getElementById("CNPJ").style.borderColor = "red";               //-
+                        document.getElementById("btCadastrar").disabled = true;                  //-
+                    }                                                                            //-
+                    //---------------------- 1° DIGITO VERIFICADOR MAIOR QUE 2 -------------------------
+                } else {                                                                         //-
+                    result = 11 - resto;                                                         //-
+                    if (cnpj[12] == result) {                                                    //-
+                        //CALCULO DO 2° DIGITO VERIFICADOR                                       //-
+                        resto = CalcularCNPJ(cnpj, DV2, 13);                                     //-
+                        if (resto < 2) {                                                         //-
+                            if (cnpj[13] == 0) {                                                 //-
+                                document.getElementById("CNPJ").style.borderColor = "green";     //-
+                                document.getElementById("btCadastrar").disabled = false;         //-
+                            } else {                                                             //-
+                                document.getElementById("CNPJ").style.borderColor = "red";       //-
+                                document.getElementById("btCadastrar").disabled = true;          //-
+                            }                                                                    //-
+                        } else {                                                                 //-
+                            result = 11 - resto;                                                 //-
+                            if (cnpj[13] == result) {                                            //-
+                                document.getElementById("CNPJ").style.borderColor = "green";     //-
+                                document.getElementById("btCadastrar").disabled = false;         //-
+                            } else {                                                             //-
+                                document.getElementById("CNPJ").style.borderColor = "red";       //-
+                                document.getElementById("btCadastrar").disabled = true;          //-
+                            }                                                                    //-
+                        }                                                                        //-
+                    } else {                                                                     //-
+                        document.getElementById("CNPJ").style.borderColor = "red";               //-
+                        document.getElementById("btCadastrar").disabled = true;                  //-
+                    }                                                                            //-
+                }                                                                                //-
+                //----------------------------------------------------------------------------------
+            } else {
+                document.getElementById("CNPJ").style.borderColor = "red";
+                document.getElementById("btCadastrar").disabled = true;
+            }
+        }
+
+        //FUNÇÃO COMPLEMENTAR DO VERIFICA CNPJ
+        function CalcularCNPJ(cnpj, DV, indice) {
+            //CALCULO DO DIGITO VERIFICADOR
+            var soma = 0, resto;
+            for (var i = 0; i < indice; i++) {
+                soma += cnpj[i] * DV[i];
+            }
+            resto = soma % 11;
+            return resto;
+        }
+
+        function VerificaCampos() {
+            console.log(ConfereCategoria(0));
+            var razaoSocial = document.getElementById("RazaoSocial").value;
+            var status = document.getElementById("status");
+            var uf = document.getElementById("uf");
+            var cidade = document.getElementById("cidade");
+
+            //if generico que retorna em uma variavel só o resultado de outros elementos
+            if (status.options[status.selectedIndex].value == "Status do estabelecimento" || uf.options[uf.selectedIndex].value == "UF" || cidade.options[cidade.selectedIndex].value == "cidade" || cidade.options[cidade.selectedIndex].value == "") {
+                status = 0;
+            } else {
+                status = 1;
+            }
+
+            //ação de cadastrar
+            if (razaoSocial != "" && document.getElementById("CNPJ").style.borderColor == "green" && ConfereCategoria(0) == 1 && status == 1) {
+                document.formularioCad.submit();
+            } else {
+                alert("Ainda existem campos obrigatórios em branco.")
+            }
+        }
+
+    </script>
+
+    <title>Cadastrar Estabelecimento</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <img src="~/imagens/estabelecimento.png" class="img-responsive center-block" />
+                <div class="apresentacao">
+                    <p>Cadastrar novo estabelecimento</p>
+                </div>
+            </div>
+
+            <form name="formularioCad" method="post" action="/Estabelecimento/CadastrarEstabelecimento">
+                <div class="col-lg-8">
+                    @if (ViewBag.Erro == true)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @(ViewBag.Mensagem)
+                        </div>
+                    }
+
+                    @if (ViewBag.Alerta == true)
+                    {
+                        <div class="alert alert-warning" role="alert">
+                            @(ViewBag.Mensagem)
+                        </div>
+                    }
+
+                    @if (ViewBag.Sucesso == true)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            @(ViewBag.Mensagem)
+                        </div>
+                    }
+
+                    <div>
+                        <div class="form-group">
+                            <label for="RazaoSocial">Razão social*</label>
+                            <input id="RazaoSocial" name="RazaoSocial" type="text" class="form-control TamanhoInput" placeholder="Digite razão social" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="NomeFantasia">Nome fantasia</label>
+                            <input id="NomeFantasia" name="NomeFantasia" type="text" class="form-control TamanhoInput" placeholder="Digite nome fantasia" />
+                        </div>
+                        <div class="form-group">
+                            <label for="CNPJ">CNPJ*</label>
+                            <input id="CNPJ" name="CNPJ" class="form-control TamanhoInput" type="text" placeholder="Digite CNPJ" required maxlength="18" onkeyup="formatar('##.###.###/####-##', this)" onchange="is_cnpj();" />
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input id="email" name="email" class="form-control TamanhoInput" type="text" placeholder="Digite o E-mail" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="ddd">DDD</label>
+                            <input class="form-control" id="ddd" name="ddd" type="text" placeholder="DDD" maxlength="2" onchange="ConfereCategoria(0);" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="telefone">Telefone</label>
+                            <input class="form-control" id="telefone" name="telefone" type="text" placeholder="Digite o telefone" maxlength="9" onkeyup="formatar('####-####', this)" onchange="ConfereCategoria(0);" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DataCadastro">Data cadastro</label>
+                        <p id="DataCadastro">@(ViewBag.Data)</p>
+                    </div>
+
+                    <div class="alert alert-warning" role="alert">
+                        Campos com * são obrigatórios.
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="categoria">Categoria*</label>
+                        <select id="categoria" name="categoria" class="form-control" onchange="ConfereCategoria(this)">
+                            <option selected>Selecione uma Categoria</option>
+                            @foreach (var C in ViewBag.ListaCategoria)
+                            {
+                                <option value="@(C.idCategoria)">@(C.nomeCategoria)</option>
+
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status*</label>
+                        <select id="status" name="status" class="form-control">
+                            <option selected>Status do estabelecimento</option>
+                            @foreach (var S in ViewBag.ListaStatus)
+                            {
+                                <option value="@(S.idStatus)">@(S.nomeStatus)</option>
+
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="logradouro">Logradouro</label>
+                        <input id="logradouro" name="logradouro" class="form-control TamanhoInput" type="text" placeholder="Digite o logradouro" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label for="UF">UF*</label>
+                        <select id="uf" name="UF" class="form-control">
+                            <option selected>UF</option>
+                            @foreach (var UF in ViewBag.ListaEstados)
+                            {
+                                <option value="@(UF.idUF)">@(UF.UF_ + '(' + UF.Sigla + ')')</option>
+
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cidade">Agência</label>
+                        <input class="form-control" id="agencia" name="agencia" type="text" placeholder="Digite a agência" maxlength="5" onkeyup="formatar('###-#', this)" />
+                    </div>
+
+                    <div class="form-group">
+                        <button id="btCadastrar" type="button" name="enviar" class="btn btn-success" onclick="VerificaCampos();">Cadastrar</button>
+                    </div>
+                </div>
+
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label for="cidade">Cidade*</label>
+                        <select id="cidade" name="cidade" class="form-control">
+                            <option selected>Cidade</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="conta">Conta</label>
+                        <input class="form-control" id="conta" name="conta" type="text" placeholder="Digite a conta" maxlength="8" onkeyup="formatar('##.###-#', this)" />
+                    </div>
+
+                    <div class="form-group" id="conteudo">
+
+                    </div>
+                </div>
+            </form>
+            <div class="form-group">
+                <a href="/Home/Index"><button type="button" name="enviar" value="Cancelar" class="btn btn-danger">Cancelar </button></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
