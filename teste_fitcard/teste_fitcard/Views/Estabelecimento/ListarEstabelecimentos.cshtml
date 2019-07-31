@@ -65,6 +65,22 @@
             });
         });
             // FIM BARRA DE PESQUISA
+
+        //confirmação de deleção
+        function Deletar(id) {
+            var opcao = confirm("Deseja realmente apagar esse estabelecimento de ID: " + id+"?");
+
+            if (opcao) {
+                @*$.post("@Url.Action("ExcluirEstabelecimento", "Estabelecimento")", { id: id });*@
+                $.ajax({
+                    url: '/Estabelecimento/ExcluirEstabelecimento/',
+                    data: { id: id }
+                }).done(function () {
+                    window.location.href = window.location.href;
+                    alert('Estabeleicmento excluido com sucesso.');
+                });
+            }
+        }
     </script>
 
     <title>Listar Estabelecimentos</title>
@@ -129,7 +145,7 @@
                                 </td>
 
                                 <td>
-                                    <a href="/Estabelecimento/ExcluirEstabelecimento/@(E.idEstabelecimento)">
+                                    <a onclick="Deletar(@E.idEstabelecimento);">
                                         <i style="font-size: 16pt; color:red;" class="glyphicon glyphicon-remove" title="Remover"></i>
                                     </a>
                                 </td>
