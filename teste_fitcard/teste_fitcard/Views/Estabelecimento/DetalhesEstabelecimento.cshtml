@@ -10,7 +10,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/css/StyleSheet.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/StyleSheet.css?v=12" rel="stylesheet" type="text/css" />
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
@@ -183,14 +183,17 @@
             var re = /^(([^<>()\[\]\.,;:\s@@\"]+(\.[^<>()\[\]\.,;:\s@@\"]+)*)|(\".+\"))@@(([^<>()[\]\.,;:\s@@\"]+\.)+[^<>()[\]\.,;:\s@@\"]{2,})$/i;
 
             if (email == "") {
-                document.getElementById("email").style.borderColor = "";
+                document.getElementById("emailInput").className = "input-group";
+                document.getElementById("emailSpan").className = "";
                 document.getElementById("btCadContato").disabled = false;
             } else {
                 if (re.test((email))) {
-                    document.getElementById("email").style.borderColor = "green";
+                    document.getElementById("emailInput").className = "input-group has-success";
+                    document.getElementById("emailSpan").className = "glyphicon glyphicon-ok form-control-feedback";
                     document.getElementById("btCadContato").disabled = false;
                 } else {
-                    document.getElementById("email").style.borderColor = "red";
+                    document.getElementById("emailInput").className = "input-group has-error";
+                    document.getElementById("emailSpan").className = "glyphicon glyphicon-remove form-control-feedback";
                     document.getElementById("btCadContato").disabled = true;
                 }
             }
@@ -203,7 +206,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <img src="~/imagens/estabelecimento.png" class="img-responsive center-block" />
+                <a href="/Home/Index"><img src="~/imagens/estabelecimento.png" class="img-responsive center-block" /></a>
                 <div class="apresentacao">
                     <p>Detalhes do estabelecimento</p>
                 </div>
@@ -281,49 +284,34 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label for="DataCadastro">Categoria</label>
-                        <select id="categoria" name="categoria" class="form-control" readonly="readonly">
-                            <option value="@(ViewBag.Detalhes.idCategoria)" selected>@(ViewBag.Detalhes.nomeCategoria)</option>
-                        </select>
+                        <input id="categoria" name="categoria" class="form-control" readonly="readonly" value="@(ViewBag.Detalhes.nomeCategoria)" />
                     </div>
                     <div class="form-group">
                         <label for="DataCadastro">Status</label>
-                        <select id="Status" name="status" class="form-control" readonly="readonly">
-                            <option value="@(ViewBag.Detalhes.idStatus)" selected>@(ViewBag.Detalhes.nomeStatus)</option>
-                        </select>
+                        <input id="Status" name="status" class="form-control" readonly="readonly" value="@(ViewBag.Detalhes.nomeStatus)" />
                     </div>
                     <div class="form-group">
                         <label for="logradouro">Logradouro</label>
                         <input id="logradouro" name="logradouro" class="form-control TamanhoInput" type="text" value="@(ViewBag.Detalhes.Logradouro)" readonly />
                     </div>
-                </div>
-
-                <div class="col-lg-2">
-                    <div class="form-group">
+                    <div class="form-group LarguraInput">
                         <label for="UF">UF</label>
-                        <select class="form-control" readonly="readonly">
-                            <option selected>@(ViewBag.Detalhes.UF)</option>
-                        </select>
+                        <input class="form-control" readonly="readonly" value="@(ViewBag.Detalhes.UF)" />
                     </div>
-                    <div class="form-group">
-                        <label for="agencia">Agência</label>
-                        <input class="form-control" id="agencia" name="agencia" type="text" value="@(ViewBag.Detalhes.Agencia)" readonly />
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-info" id="btAlterar" onclick="isCadastrar();">Alterar</button>
-                    </div>
-                </div>
-
-                <div class="col-lg-2">
-                    <div class="form-group">
+                    <div class="form-group LarguraInput">
                         <label for="cidade">Cidade</label>
                         <input class="form-control" type="text" value="@(ViewBag.Detalhes.Municipio)" readonly />
                     </div>
-
-                    <div class="form-group">
+                    <div class="form-group LarguraInput">
+                        <label for="agencia">Agência</label>
+                        <input class="form-control" id="agencia" name="agencia" type="text" value="@(ViewBag.Detalhes.Agencia)" readonly />
+                    </div>
+                    <div class="form-group LarguraInput">
                         <label for="conta">Conta</label>
                         <input class="form-control" id="conta" name="conta" type="text" value="@(ViewBag.Detalhes.Conta)" readonly />
                     </div>
                     <div class="form-group">
+                        <button class="btn btn-info" id="btAlterar" onclick="isCadastrar();">Alterar</button>
                         <a href="/Estabelecimento/ListarEstabelecimentos"><button type="button" name="enviar" value="Voltar" class="btn btn-warning">Voltar </button></a>
                     </div>
                 </div>
@@ -334,6 +322,11 @@
             <div id="Alterar" style="display:none;">
                 <form method="post" action="/Estabelecimento/AlterarEstabelecimento/@(ViewBag.Detalhes.idEstabelecimento)">
                     <div class="col-lg-8">
+
+                        <div class="alert alert-warning" role="alert">
+                            Campos com * são obrigatórios.
+                        </div>
+
                         @if (ViewBag.Erro == true)
                         {
                             <div class="alert alert-danger" role="alert">
@@ -431,10 +424,6 @@
                                 <label for="DataCadastro">Data de cadastro</label>
                                 <p id="DataCadastro">@(ViewBag.Detalhes.dataCadastro)</p>
                             </div>
-
-                            <div class="alert alert-warning" role="alert">
-                                Campos com * são obrigatórios.
-                            </div>
                         </div>
                     </div>
 
@@ -465,10 +454,7 @@
                             <label for="logradouro">Logradouro</label>
                             <input id="logradouro" name="logradouro" class="form-control TamanhoInput" type="text" value="@(ViewBag.Detalhes.Logradouro)" />
                         </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <div class="form-group">
+                        <div class="form-group" style="float:left; width:49%;">
                             <label for="UF">UF*</label>
                             <select id="UF" name="UF" class="form-control">
                                 <option value="@(ViewBag.Detalhes.idUF)" selected>@(ViewBag.Detalhes.UF)</option>
@@ -479,34 +465,28 @@
                                 }
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="agencia">Agência</label>
-                            <input class="form-control" id="agencia" name="agencia" type="text" value="@(ViewBag.Detalhes.Agencia)" maxlength="5" onkeyup="formatar('###-#', this)" />
-                        </div>
-
-                        <div class="form-group">
-                            <button class="btn btn-success" id="btAlterarEst" type="submit">Alterar</button>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <div class="form-group">
+                        <div class="form-group" style="float:right; width:49%;">
                             <label for="cidade">Cidade*</label>
                             <select id="idCidade" name="idCidade" class="form-control">
                                 <option value="@(ViewBag.Detalhes.idCidade)" selected>@(ViewBag.Detalhes.Municipio)</option>
                             </select>
                             <input hidden name="idEndereco" value="@(ViewBag.Detalhes.idEndereco)" />
                         </div>
-
-                        <div class="form-group">
+                        <div class="form-group LarguraInput">
+                            <label for="agencia">Agência</label>
+                            <input class="form-control" id="agencia" name="agencia" type="text" value="@(ViewBag.Detalhes.Agencia)" maxlength="5" onkeyup="formatar('###-#', this)" />
+                        </div>
+                        <div class="form-group LarguraInput">
                             <label for="conta">Conta</label>
                             <input class="form-control" id="conta" name="conta" type="text" value="@(ViewBag.Detalhes.Conta)" maxlength="8" onkeyup="formatar('##.###-#', this)" />
                         </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-success" id="btAlterarEst" type="submit">Alterar</button>
+                            <button class="btn btn-warning" id="btCancelar" onclick="isAlterar();">Cancelar</button>
+                        </div>
                     </div>
                 </form>
-                <div class="form-group">
-                    <button class="btn btn-warning" id="btCancelar" onclick="isAlterar();">Cancelar</button>
-                </div>
             </div>
             @*FIM DIV ALTERAÇÃO*@
 
@@ -517,7 +497,11 @@
                         <div class="col-lg-8">
                             <div class="form-group">
                                 <label for="email">E-mail</label>
-                                <input id="email" name="email" class="form-control TamanhoInput" type="text" placeholder="Digite o E-mail" onchange="validateEmail();" />
+                                <div id="emailInput" class="input-group">
+                                    <span class="input-group-addon">@@</span>
+                                    <input id="email" name="email" class="form-control TamanhoInput" type="text" placeholder="Digite o E-mail" onchange="validateEmail();" />
+                                    <span id="emailSpan"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -537,15 +521,12 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="form-group col-lg-2">
-                            <button id="btCadContato" class="btn btn-success" type="submit">Cadastrar</button>
-                        </div>
+                    <div class="form-group">
+                        <button id="btCadContato" class="btn btn-success" type="submit">Cadastrar</button>
                     </div>
-                </form>
 
-                <div class="form-group row col-lg-2">
+                </form>
+                <div class="form-group">
                     <button class="btn btn-warning" onclick="isNotContato()">Cancelar</button>
                 </div>
             </div>

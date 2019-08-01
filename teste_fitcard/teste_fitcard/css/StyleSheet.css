@@ -20,3 +20,10 @@
 .TamanhoInput {
     height: 50%;
 }
+
+
+.LarguraInput {
+    width: 48%;
+    float: left;
+    margin: 1%;
+}

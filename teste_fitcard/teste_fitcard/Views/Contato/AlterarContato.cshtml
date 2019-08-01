@@ -28,14 +28,17 @@
             var re = /^(([^<>()\[\]\.,;:\s@@\"]+(\.[^<>()\[\]\.,;:\s@@\"]+)*)|(\".+\"))@@(([^<>()[\]\.,;:\s@@\"]+\.)+[^<>()[\]\.,;:\s@@\"]{2,})$/i;
 
             if (email == "") {
-                document.getElementById("email").style.borderColor = "";
+                document.getElementById("emailInput").className = "input-group";
+                document.getElementById("emailSpan").className = "";
                 document.getElementById("btnAltCont").disabled = false;
             } else {
                 if (re.test((email))) {
-                    document.getElementById("email").style.borderColor = "green";
+                    document.getElementById("emailInput").className = "input-group has-success";
+                    document.getElementById("emailSpan").className = "glyphicon glyphicon-ok form-control-feedback";
                     document.getElementById("btnAltCont").disabled = false;
                 } else {
-                    document.getElementById("email").style.borderColor = "red";
+                    document.getElementById("emailInput").className = "input-group has-error";
+                    document.getElementById("emailSpan").className = "glyphicon glyphicon-remove form-control-feedback";
                     document.getElementById("btnAltCont").disabled = true;
                 }
             }
@@ -49,7 +52,7 @@
         <form method="post">
             <div class="row">
                 <div class="col-lg-12">
-                    <img src="~/imagens/estabelecimento.png" class="img-responsive center-block" />
+                    <a href="/Home/Index"><img src="~/imagens/estabelecimento.png" class="img-responsive center-block" /></a>
                     <div class="apresentacao">
                         <p>Detalhes do estabelecimento</p>
                     </div>
@@ -57,7 +60,11 @@
                 <div class="col-lg-8">
                     <div class="form-group">
                         <label for="email">E-mail</label>
-                        <input id="email" name="email" class="form-control TamanhoInput" type="text" value="@(ViewBag.Contato.Email)" onchange="validateEmail();" />
+                        <div id="emailInput" class="input-group">
+                            <span class="input-group-addon">@@</span>
+                            <input id="email" name="email" class="form-control TamanhoInput" type="text" value="@(ViewBag.Contato.Email)" onchange="validateEmail();" />
+                            <span id="emailSpan"></span>
+                        </div>
                     </div>
                 </div>
             </div>
