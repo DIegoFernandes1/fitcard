@@ -10,6 +10,7 @@
     <link href="~/css/StyleSheet.css" rel="stylesheet" type="text/css" />
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
     <script type="text/javascript">
         //FUNÇÃO LOAD NAS CIDADES BASEADO NA ESCOLHA DO ESTADO
@@ -191,11 +192,32 @@
                 status = 1;
             }
 
+            if (validateEmail() == 1 || document.getElementById("email").value == "" || document.getElementById("email").value == " ") {
+                email = 1;
+            }
+
             //ação de cadastrar
-            if (razaoSocial != "" && document.getElementById("CNPJ").style.borderColor == "green" && ConfereCategoria(0) == 1 && status == 1) {
+            if (razaoSocial != "" && document.getElementById("CNPJ").style.borderColor == "green" && ConfereCategoria(0) == 1 && status == 1 && email == 1) {
                 document.formularioCad.submit();
             } else {
                 alert("Ainda existem campos obrigatórios em branco.")
+            }
+        }
+
+        function validateEmail() {
+            var email = document.getElementById("email").value;
+            var re = /^(([^<>()\[\]\.,;:\s@@\"]+(\.[^<>()\[\]\.,;:\s@@\"]+)*)|(\".+\"))@@(([^<>()[\]\.,;:\s@@\"]+\.)+[^<>()[\]\.,;:\s@@\"]{2,})$/i;
+
+            if (email == "") {
+                document.getElementById("email").style.borderColor = "";
+            } else {
+                if (re.test((email))) {
+                    document.getElementById("email").style.borderColor = "green";
+                    return 1;
+                } else {
+                    document.getElementById("email").style.borderColor = "red";
+                    return 0;
+                }
             }
         }
 
@@ -251,7 +273,7 @@
                         </div>
                         <div class="form-group">
                             <label for="email">E-mail</label>
-                            <input id="email" name="email" class="form-control TamanhoInput" type="text" placeholder="Digite o E-mail" />
+                            <input id="email" name="email" class="form-control TamanhoInput" type="text" placeholder="Digite o E-mail" onchange="validateEmail(this);" />
                         </div>
                     </div>
 

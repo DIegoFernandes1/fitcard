@@ -172,10 +172,28 @@
                     document.getElementById("btAlterarEst").disabled = true;
                     alert("Necessário um meio de contato para concluir a alteração.");
                 }
-            }else {
+            } else {
                 document.getElementById("btAlterarEst").disabled = false;
             }
 
+        }
+
+        function validateEmail() {
+            var email = document.getElementById("email").value;
+            var re = /^(([^<>()\[\]\.,;:\s@@\"]+(\.[^<>()\[\]\.,;:\s@@\"]+)*)|(\".+\"))@@(([^<>()[\]\.,;:\s@@\"]+\.)+[^<>()[\]\.,;:\s@@\"]{2,})$/i;
+
+            if (email == "") {
+                document.getElementById("email").style.borderColor = "";
+                document.getElementById("btCadContato").disabled = false;
+            } else {
+                if (re.test((email))) {
+                    document.getElementById("email").style.borderColor = "green";
+                    document.getElementById("btCadContato").disabled = false;
+                } else {
+                    document.getElementById("email").style.borderColor = "red";
+                    document.getElementById("btCadContato").disabled = true;
+                }
+            }
         }
     </script>
 
@@ -410,8 +428,8 @@
                                 </table>
                             </div>
                             <div class="form-group">
-                                <label for="DataAlteracao">Data de alteração</label>
-                                <p id="DataAlteracao">@(ViewBag.Data)</p>
+                                <label for="DataCadastro">Data de cadastro</label>
+                                <p id="DataCadastro">@(ViewBag.Detalhes.dataCadastro)</p>
                             </div>
 
                             <div class="alert alert-warning" role="alert">
@@ -494,12 +512,12 @@
 
             @*COMEÇO DIV CADASTRAR CONTATO*@
             <div id="CadastrarContato" style="display:none;">
-                <form method="post" action="~/Contato/CadastrarContato">
+                <form id="CadContForm" method="post" action="~/Contato/CadastrarContato">
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="form-group">
                                 <label for="email">E-mail</label>
-                                <input id="email" name="email" class="form-control TamanhoInput" type="text" placeholder="Digite o E-mail" />
+                                <input id="email" name="email" class="form-control TamanhoInput" type="text" placeholder="Digite o E-mail" onchange="validateEmail();" />
                             </div>
                         </div>
                     </div>
@@ -522,7 +540,7 @@
 
                     <div class="row">
                         <div class="form-group col-lg-2">
-                            <button class="btn btn-success" type="submit">Cadastrar</button>
+                            <button id="btCadContato" class="btn btn-success" type="submit">Cadastrar</button>
                         </div>
                     </div>
                 </form>

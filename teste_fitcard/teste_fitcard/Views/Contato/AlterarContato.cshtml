@@ -22,6 +22,24 @@
                 documento.value += texto.substring(0, 1);
             }
         }
+
+        function validateEmail() {
+            var email = document.getElementById("email").value;
+            var re = /^(([^<>()\[\]\.,;:\s@@\"]+(\.[^<>()\[\]\.,;:\s@@\"]+)*)|(\".+\"))@@(([^<>()[\]\.,;:\s@@\"]+\.)+[^<>()[\]\.,;:\s@@\"]{2,})$/i;
+
+            if (email == "") {
+                document.getElementById("email").style.borderColor = "";
+                document.getElementById("btnAltCont").disabled = false;
+            } else {
+                if (re.test((email))) {
+                    document.getElementById("email").style.borderColor = "green";
+                    document.getElementById("btnAltCont").disabled = false;
+                } else {
+                    document.getElementById("email").style.borderColor = "red";
+                    document.getElementById("btnAltCont").disabled = true;
+                }
+            }
+        }
     </script>
 
     <title>Alterar Contato</title>
@@ -39,7 +57,7 @@
                 <div class="col-lg-8">
                     <div class="form-group">
                         <label for="email">E-mail</label>
-                        <input id="email" name="email" class="form-control TamanhoInput" type="text" value="@(ViewBag.Contato.Email)" />
+                        <input id="email" name="email" class="form-control TamanhoInput" type="text" value="@(ViewBag.Contato.Email)" onchange="validateEmail();" />
                     </div>
                 </div>
             </div>
@@ -48,21 +66,21 @@
                 <div class="col-lg-2">
                     <div class="form-group">
                         <label for="ddd">DDD</label>
-                        <input class="form-control" id="ddd" name="ddd" type="text" value="@(ViewBag.Contato.DDD)"  maxlength="2" />
+                        <input class="form-control" id="ddd" name="ddd" type="text" value="@(ViewBag.Contato.DDD)" maxlength="2" />
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label for="telefone">Telefone</label>
                         <input class="form-control" id="telefone" name="telefone" type="text" value="@(ViewBag.Contato.Numero)" maxlength="9" onkeyup="formatar('####-####', this)" />
-                        <input name="id_Estabelecimento" type="text" value="@(ViewBag.Contato.id_Estabelecimento)" hidden="hidden"/>
+                        <input name="id_Estabelecimento" type="text" value="@(ViewBag.Contato.id_Estabelecimento)" hidden="hidden" />
                     </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group col-lg-4">
-                    <button class="btn btn-success" onclick="~/Contato/AlterarContato/@(ViewBag.Contato.idContato)">Alterar</button>
+                    <button id="btnAltCont" class="btn btn-success" onclick="~/Contato/AlterarContato/@(ViewBag.Contato.idContato)">Alterar</button>
                     <a href="/Estabelecimento/DetalhesEstabelecimento/@(ViewBag.Contato.id_Estabelecimento)"><button type="button" class="btn btn-warning">Voltar</button></a>
                 </div>
             </div>

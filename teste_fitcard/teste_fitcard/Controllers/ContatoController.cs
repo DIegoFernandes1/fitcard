@@ -88,7 +88,7 @@ namespace teste_fitcard.Controllers
         public ActionResult RemoverContato(Int32 ID)
         {
             Contato C = new Contato();
-            Int32? Id_Estabelecimento = C.RemoverContato(ID, 0);
+            Int32 Id_Estabelecimento = C.RemoverContato(ID, 0);
             return RedirectToAction("DetalhesEstabelecimento", "Estabelecimento", new { @id = Id_Estabelecimento });
         }
     }

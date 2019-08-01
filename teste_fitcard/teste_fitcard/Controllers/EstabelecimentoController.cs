@@ -154,7 +154,6 @@ namespace teste_fitcard.Controllers
         public String SelecionaCidades(Int32 ID)
         {
             Endereco E = new Endereco();
-
             return JsonConvert.SerializeObject(E.ListarCidade(ID));
         }
 
@@ -183,9 +182,6 @@ namespace teste_fitcard.Controllers
             {
                 Categoria CA = new Categoria();
                 ViewBag.ListaCategoria = CA.ListarCategoria();
-
-                DateTime date = DateTime.UtcNow;
-                ViewBag.Data = date;
 
                 Status S = new Status();
                 ViewBag.ListaStatus = S.ListaStatus();
@@ -262,7 +258,7 @@ namespace teste_fitcard.Controllers
         /************************************************ Verifica Email é valido  ************************************************/
         public static Boolean isEmail(string email)
         {
-            Regex rg = new System.Text.RegularExpressions.Regex(@"^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$");
+            Regex rg = new Regex(@"^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$");
             return (rg.IsMatch(email)) ? true : false;
         }
     }

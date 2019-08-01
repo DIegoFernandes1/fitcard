@@ -85,7 +85,7 @@ namespace teste_fitcard.Models
         }
 
         /************************************************ Remover contato  ************************************************/
-        public Int32? RemoverContato(Int32? idContato, Int32? id_Estabelecimento)
+        public Int32 RemoverContato(Int32? idContato, Int32? id_Estabelecimento)
         {
             SqlConnection Conexao = new SqlConnection(ConfigurationManager.ConnectionStrings["Conexao"].ConnectionString);
             Conexao.Open();
@@ -94,13 +94,13 @@ namespace teste_fitcard.Models
             Comando.Connection = Conexao;
 
             Comando.CommandText = "DELETE FROM Contato OUTPUT DELETED.id_Estabelecimento WHERE idContato = @idContato OR id_Estabelecimento = @id_estabelecimento";
-            Comando.Parameters.AddWithValue("@idContato", idContato);
-            Comando.Parameters.AddWithValue("@id_estabelecimento", id_Estabelecimento);
+            Comando.Parameters.AddWithValue("@idContato", idContato.Value);
+            Comando.Parameters.AddWithValue("@id_estabelecimento", id_Estabelecimento.Value);
 
             SqlDataReader Leitor = Comando.ExecuteReader();
             Leitor.Read();
 
-            Int32? Resultado = Convert.ToInt32(Leitor["id_Estabelecimento"].ToString());
+            Int32 Resultado = Convert.ToInt32(Leitor["id_Estabelecimento"].ToString());
             Conexao.Close();
 
             return (Resultado > 0) ? Resultado : 0;
