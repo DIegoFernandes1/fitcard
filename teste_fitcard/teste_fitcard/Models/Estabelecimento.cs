@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Data;
@@ -11,13 +9,17 @@ namespace teste_fitcard.Models
     public class Estabelecimento
     {
         public Int32 idEstabelecimento { get; set; }
-        public Int32 id_status { get; set; }
         public Int32 id_endereco { get; set; }
         public String razaoSocial { get; set; }
         public String nomeFantasia { get; set; }
         public String CNPJ { get; set; }
         public DateTime dataCadastro { get; set; }
-        public String Status { get; set; }
+        public Status Status { get; set; }
+
+        public Estabelecimento()
+        {
+            Status = new Status();
+        }
 
         /************************************************ Cadastrar Estabelecimento  ************************************************/
         public Int32 CadastrarEstabelecimento(Int32 ID)
@@ -29,7 +31,7 @@ namespace teste_fitcard.Models
             Comando.Connection = Conexao;
 
             Comando.CommandText = "INSERT INTO Estabelecimento OUTPUT INSERTED.idEstabelecimento VALUES(@id_Status, @id_Endereco, @razaoSocial, @nomeFantasia, @CNPJ, @dataCadastro)";
-            Comando.Parameters.AddWithValue("@id_Status", this.id_status);
+            Comando.Parameters.AddWithValue("@id_Status", this.Status.idStatus);
             Comando.Parameters.AddWithValue("@id_Endereco", ID);
             Comando.Parameters.AddWithValue("@razaoSocial", this.razaoSocial);
             Comando.Parameters.AddWithValue("@nomeFantasia", this.nomeFantasia);
@@ -54,7 +56,7 @@ namespace teste_fitcard.Models
             Comando.Connection = Conexao;
 
             Comando.CommandText = "UPDATE Estabelecimento SET id_Status = @id_Status, razaoSocial = @razaoSocial, nomeFantasia = @nomeFantasia, CNPJ = @CNPJ WHERE idEstabelecimento = @idEstabelecimento";
-            Comando.Parameters.AddWithValue("@id_Status", this.id_status);
+            Comando.Parameters.AddWithValue("@id_Status", this.Status.idStatus);
             Comando.Parameters.AddWithValue("@razaoSocial", this.razaoSocial);
             Comando.Parameters.AddWithValue("@nomeFantasia", this.nomeFantasia);
             Comando.Parameters.AddWithValue("@CNPJ", this.CNPJ);
@@ -89,7 +91,7 @@ namespace teste_fitcard.Models
                 E.nomeFantasia = Leitor["nomeFantasia"].ToString();
                 E.CNPJ = Leitor["CNPJ"].ToString();
                 E.dataCadastro = Convert.ToDateTime(Leitor["datacadastro"].ToString());
-                E.Status = Leitor["nomeStatus"].ToString();
+                E.Status.nomeStatus = Leitor["nomeStatus"].ToString();
 
                 Estabelecimentos.Add(E);
             }
@@ -144,7 +146,7 @@ namespace teste_fitcard.Models
                     E.nomeFantasia = Leitor["nomeFantasia"].ToString();
                     E.CNPJ = Leitor["CNPJ"].ToString();
                     E.dataCadastro = Convert.ToDateTime(Leitor["datacadastro"].ToString());
-                    E.Status = Leitor["nomeStatus"].ToString();
+                    E.Status.nomeStatus = Leitor["nomeStatus"].ToString();
 
                     Estabelecimentos.Add(E);
                 }

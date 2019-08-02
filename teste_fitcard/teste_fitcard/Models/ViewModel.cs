@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Configuration;
 using System.Data.SqlClient;
 
@@ -9,28 +6,26 @@ namespace teste_fitcard.Models
 {
     public class ViewModel
     {
-        public String nomeCategoria { get; set; }
-        public Int32 idCategoria { get; set; }
-        public String Agencia { get; set; }
-        public String Conta { get; set; }
-        public String Logradouro { get; set; }
-        public String Municipio { get; set; }
-        public Int32 idCidade { get; set; }
-        public Int32 idEndereco { get; set; }
-        public Int32 idEstabelecimento { get; set; }
-        public String razaoSocial { get; set; }
-        public String nomeFantasia { get; set; }
-        public String CNPJ { get; set; }
-        public DateTime dataCadastro { get; set; }
-        public String nomeStatus { get; set; }
-        public Int32 idStatus { get; set; }
-        public String UF { get; set; }
-        public Int32 idUF { get; set; }
-        public String Sigla { get; set; }
+        public Categoria Categoria { get; set; }
+        public Conta Conta { get; set; }
+        public UF UF { get; set; }
+        public Endereco Endereco { get; set; }
+        public Cidade Cidade { get; set; }
+        public Estabelecimento Estabelecimento { get; set; }
+        public Status Status { get; set; }
+
 
         /************************************************ Detalhes Estabelecimento  ************************************************/
-        public ViewModel (Int32 ID)
+        public ViewModel(Int32 ID)
         {
+            Categoria = new Categoria();
+            Conta = new Conta();
+            UF = new UF();
+            Endereco = new Endereco();
+            Cidade = new Cidade();
+            Estabelecimento = new Estabelecimento();
+            Status = new Status();
+
             SqlConnection Conexao = new SqlConnection(ConfigurationManager.ConnectionStrings["Conexao"].ConnectionString);
             Conexao.Open();
 
@@ -53,25 +48,25 @@ namespace teste_fitcard.Models
             SqlDataReader Leitor = Comando.ExecuteReader();
             Leitor.Read();
 
-            this.idEstabelecimento = Convert.ToInt32(Leitor["idEstabelecimento"].ToString());
-            this.razaoSocial = Leitor["razaoSocial"].ToString();
-            this.nomeFantasia = Leitor["nomeFantasia"].ToString();
-            this.CNPJ = Leitor["CNPJ"].ToString();
-            this.dataCadastro = Convert.ToDateTime(Leitor["datacadastro"].ToString());
-            this.nomeStatus = Leitor["nomeStatus"].ToString();
-            this.idStatus = Convert.ToInt32(Leitor["idStatus"].ToString());
-            this.Logradouro = Leitor["Logradouro"].ToString();
-            this.Municipio = Leitor["Municipio"].ToString();
-            this.idEndereco = Convert.ToInt32(Leitor["idEndereco"].ToString());
-            this.idCidade = Convert.ToInt32(Leitor["idcidade"].ToString());
-            this.UF = Leitor["UF"].ToString();
-            this.idUF = Convert.ToInt32(Leitor["idUF"].ToString());
-            this.Sigla = Leitor["Sigla"].ToString();
-            this.nomeCategoria = Leitor["nomeCategoria"].ToString();
-            this.idCategoria = Convert.ToInt32(Leitor["IdCategoria"].ToString());
-            this.Conta = Leitor["Conta"].ToString();
-            this.Agencia = Leitor["Agencia"].ToString();
-            
+            this.Estabelecimento.idEstabelecimento = Convert.ToInt32(Leitor["idEstabelecimento"].ToString());
+            this.Estabelecimento.razaoSocial = Leitor["razaoSocial"].ToString();
+            this.Estabelecimento.nomeFantasia = Leitor["nomeFantasia"].ToString();
+            this.Estabelecimento.CNPJ = Leitor["CNPJ"].ToString();
+            this.Estabelecimento.dataCadastro = Convert.ToDateTime(Leitor["datacadastro"].ToString());
+            this.Status.nomeStatus = Leitor["nomeStatus"].ToString();
+            this.Status.idStatus = Convert.ToInt32(Leitor["idStatus"].ToString());
+            this.Endereco.Logradouro = Leitor["Logradouro"].ToString();
+            this.Cidade.idCidade = Convert.ToInt32(Leitor["idcidade"].ToString());
+            this.Cidade.Municipio = Leitor["Municipio"].ToString();
+            this.Endereco.idEndereco = Convert.ToInt32(Leitor["idEndereco"].ToString());
+            this.UF.UF_ = Leitor["UF"].ToString();
+            this.UF.idUF = Convert.ToInt32(Leitor["idUF"].ToString());
+            this.UF.Sigla = Leitor["Sigla"].ToString();
+            this.Categoria.nomeCategoria = Leitor["nomeCategoria"].ToString();
+            this.Categoria.idCategoria = Convert.ToInt32(Leitor["IdCategoria"].ToString());
+            this.Conta.Conta_ = Leitor["Conta"].ToString();
+            this.Conta.Agencia = Leitor["Agencia"].ToString();
+
             Conexao.Close();
         }
     }

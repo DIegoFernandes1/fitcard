@@ -20,7 +20,7 @@ namespace teste_fitcard.Controllers
                 C.DDD = Request.Form["ddd"].ToString();
                 C.Numero = Request.Form["telefone"].ToString();
                 C.Email = Request.Form["email"].ToString();
-                C.id_Estabelecimento = Convert.ToInt32(Request.Form["id_Estabelecimento"].ToString());
+                C.Estabelecimento.idEstabelecimento = Convert.ToInt32(Request.Form["id_Estabelecimento"].ToString());
 
                 try
                 {
@@ -28,14 +28,14 @@ namespace teste_fitcard.Controllers
                     {
                         if (EstabelecimentoController.isEmail(C.Email))
                         {
-                            C.InserirContato(C.id_Estabelecimento);
-                            return RedirectToAction("DetalhesEstabelecimento", "Estabelecimento", new { @id = C.id_Estabelecimento });
+                            C.InserirContato(C.Estabelecimento.idEstabelecimento);
+                            return RedirectToAction("DetalhesEstabelecimento", "Estabelecimento", new { @id = C.Estabelecimento.idEstabelecimento});
                         }
                     }
                     else
                     {
-                        C.InserirContato(C.id_Estabelecimento);
-                        return RedirectToAction("DetalhesEstabelecimento", "Estabelecimento", new { @id = C.id_Estabelecimento });
+                        C.InserirContato(C.Estabelecimento.idEstabelecimento);
+                        return RedirectToAction("DetalhesEstabelecimento", "Estabelecimento", new { @id = C.Estabelecimento.idEstabelecimento });
                     }
                 }
                 catch
@@ -56,7 +56,7 @@ namespace teste_fitcard.Controllers
                 C.DDD = Request.Form["ddd"].ToString();
                 C.Numero = Request.Form["telefone"].ToString();
                 C.Email = Request.Form["email"].ToString();
-                C.id_Estabelecimento = Convert.ToInt32(Request.Form["id_Estabelecimento"].ToString());
+                C.Estabelecimento.idEstabelecimento = Convert.ToInt32(Request.Form["id_Estabelecimento"].ToString());
 
                 try
                 {
@@ -65,13 +65,13 @@ namespace teste_fitcard.Controllers
                         if (EstabelecimentoController.isEmail(C.Email))
                         {
                             C.AlterarContato(ID);
-                            return RedirectToAction("DetalhesEstabelecimento", "Estabelecimento", new { @id = C.id_Estabelecimento });
+                            return RedirectToAction("DetalhesEstabelecimento", "Estabelecimento", new { @id = C.Estabelecimento.idEstabelecimento });
                         }
                     }
                     else
                     {
                         C.AlterarContato(ID);
-                        return RedirectToAction("DetalhesEstabelecimento", "Estabelecimento", new { @id = C.id_Estabelecimento });
+                        return RedirectToAction("DetalhesEstabelecimento", "Estabelecimento", new { @id = C.Estabelecimento.idEstabelecimento });
                     }
                 }
                 catch

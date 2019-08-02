@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 
-
 namespace teste_fitcard.Models
 {
     public class Categoria
     {
         public Int32 idCategoria { get; set; }
         public Int32 id_Categoria { get; set; }
-        public Int32 id_Estabelecimento { get; set; }
         public String nomeCategoria { get; set; }
-
 
         /************************************************ Lista Categorias  ************************************************/
         public List<Categoria> ListarCategoria()

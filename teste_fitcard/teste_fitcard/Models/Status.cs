@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Configuration;
-using System.Linq;
-using System.Web;
 
 namespace teste_fitcard.Models
 {
@@ -23,7 +21,6 @@ namespace teste_fitcard.Models
                 SqlCommand Comando = new SqlCommand();
                 Comando.Connection = Conexao;
 
-
                 Comando.CommandText = "SELECT idStatus, nomeStatus FROM Status";
                 SqlDataReader Leitor = Comando.ExecuteReader();
 
@@ -34,7 +31,6 @@ namespace teste_fitcard.Models
                     S.nomeStatus = Leitor["nomeStatus"].ToString();
                     Lista.Add(S);
                 }
-
                 Conexao.Close();
                 return Lista;
             }

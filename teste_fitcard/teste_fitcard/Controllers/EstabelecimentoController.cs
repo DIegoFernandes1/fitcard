@@ -36,7 +36,7 @@ namespace teste_fitcard.Controllers
                     ES.razaoSocial = Request.Form["razaoSocial"].ToString();
                     ES.nomeFantasia = Request.Form["nomeFantasia"].ToString();
                     ES.CNPJ = Request.Form["CNPJ"].ToString();
-                    ES.id_status = Convert.ToInt32(Request.Form["status"].ToString());
+                    ES.Status.idStatus = Convert.ToInt32(Request.Form["status"].ToString());
                     ES.dataCadastro = date;
 
                     Contato CON = new Contato();
@@ -45,8 +45,8 @@ namespace teste_fitcard.Controllers
                     CON.Email = Request.Form["email"].ToString();
 
                     Endereco EN = new Endereco();
-                    EN.id_UF = Convert.ToInt32(Request.Form["UF"].ToString());
-                    EN.idCidade = Convert.ToInt32(Request.Form["cidade"].ToString());
+                    EN.Cidade.idCidade = Convert.ToInt32(Request.Form["cidade"].ToString());
+                    EN.Cidade.id_UF = Convert.ToInt32(Request.Form["UF"].ToString());
                     EN.Logradouro = Request.Form["logradouro"].ToString();
 
                     Conta CO = new Conta();
@@ -64,7 +64,7 @@ namespace teste_fitcard.Controllers
                             /*** CADASTRA DE FATO***/
                             try
                             {
-                                Int32 idEndereco = EN.InserirEndereco(EN.idCidade);
+                                Int32 idEndereco = EN.InserirEndereco(EN.Cidade.idCidade);
 
                                 if (idEndereco > 0)
                                 {
@@ -93,7 +93,7 @@ namespace teste_fitcard.Controllers
                     {
                         try
                         {
-                            Int32 idEndereco = EN.InserirEndereco(EN.idCidade);
+                            Int32 idEndereco = EN.InserirEndereco(EN.Cidade.idCidade);
 
                             if (idEndereco > 0)
                             {
@@ -153,8 +153,8 @@ namespace teste_fitcard.Controllers
         /************************************************ Listar Cidades  ************************************************/
         public String SelecionaCidades(Int32 ID)
         {
-            Endereco E = new Endereco();
-            return JsonConvert.SerializeObject(E.ListarCidade(ID));
+            Cidade C = new Cidade();
+            return JsonConvert.SerializeObject(C.ListarCidade(ID));
         }
 
         /************************************************ Listar Estabelecimento  ************************************************/
@@ -194,12 +194,12 @@ namespace teste_fitcard.Controllers
                 Contato C = new Contato();
                 ViewBag.Contatos = C.ListarContatos(ID);
                 return View();
-            }
+        }
             catch
             {
                 return View();
-            }
-        }
+    }
+}
 
         /************************************************ Alterar Estabelecimento  ************************************************/
         public ActionResult AlterarEstabelecimento(Int32 ID)
@@ -212,12 +212,12 @@ namespace teste_fitcard.Controllers
                     ES.razaoSocial = Request.Form["razaoSocial"].ToString();
                     ES.nomeFantasia = Request.Form["nomeFantasia"].ToString();
                     ES.CNPJ = Request.Form["CNPJ"].ToString();
-                    ES.id_status = Convert.ToInt32(Request.Form["status"].ToString());
+                    ES.Status.idStatus = Convert.ToInt32(Request.Form["status"].ToString());
 
                     Endereco EN = new Endereco();
-                    EN.id_UF = Convert.ToInt32(Request.Form["UF"].ToString());
+                    EN.Cidade.id_UF = Convert.ToInt32(Request.Form["UF"].ToString());
                     EN.idEndereco = Convert.ToInt32(Request.Form["idEndereco"].ToString());
-                    EN.idCidade = Convert.ToInt32(Request.Form["idCidade"].ToString());
+                    EN.Cidade.idCidade = Convert.ToInt32(Request.Form["idCidade"].ToString());
                     EN.Logradouro = Request.Form["logradouro"].ToString();
 
                     Conta CO = new Conta();

@@ -1,6 +1,4 @@
 ﻿@{
-    /**/
-
     Layout = null;
 }
 
@@ -218,15 +216,15 @@
                     <div>
                         <div class="form-group">
                             <label for="RazaoSocial">Razão social</label>
-                            <input id="RazaoSocial" name="RazaoSocial" type="text" class="form-control TamanhoInput" value="@(ViewBag.Detalhes.razaoSocial)" readonly />
+                            <input id="RazaoSocial" name="RazaoSocial" type="text" class="form-control TamanhoInput" value="@(ViewBag.Detalhes.Estabelecimento.razaoSocial)" readonly />
                         </div>
                         <div class="form-group">
                             <label for="NomeFantasia">Nome fantasia</label>
-                            <input id="NomeFantasia" name="NomeFantasia" type="text" class="form-control TamanhoInput" value="@(ViewBag.Detalhes.nomeFantasia)" readonly />
+                            <input id="NomeFantasia" name="NomeFantasia" type="text" class="form-control TamanhoInput" value="@(ViewBag.Detalhes.Estabelecimento.nomeFantasia)" readonly />
                         </div>
                         <div class="form-group">
                             <label for="CNPJ">CNPJ</label>
-                            <input name="CNPJ" class="form-control TamanhoInput" type="text" value="@(ViewBag.Detalhes.CNPJ)" readonly />
+                            <input name="CNPJ" class="form-control TamanhoInput" type="text" value="@(ViewBag.Detalhes.Estabelecimento.CNPJ)" readonly />
                         </div>
 
                         <div>
@@ -276,7 +274,7 @@
                         </div>
                         <div class="form-group">
                             <label for="DataCadastro">Data cadastro</label>
-                            <p id="DataCadastro">@(ViewBag.Detalhes.dataCadastro)</p>
+                            <p id="DataCadastro">@(ViewBag.Detalhes.Estabelecimento.dataCadastro)</p>
                         </div>
                     </div>
                 </div>
@@ -284,31 +282,31 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label for="DataCadastro">Categoria</label>
-                        <input id="categoria" name="categoria" class="form-control" readonly="readonly" value="@(ViewBag.Detalhes.nomeCategoria)" />
+                        <input id="categoria" name="categoria" class="form-control" readonly="readonly" value="@(ViewBag.Detalhes.Categoria.nomeCategoria)" />
                     </div>
                     <div class="form-group">
                         <label for="DataCadastro">Status</label>
-                        <input id="Status" name="status" class="form-control" readonly="readonly" value="@(ViewBag.Detalhes.nomeStatus)" />
+                        <input id="Status" name="status" class="form-control" readonly="readonly" value="@(ViewBag.Detalhes.Status.nomeStatus)" />
                     </div>
                     <div class="form-group">
                         <label for="logradouro">Logradouro</label>
-                        <input id="logradouro" name="logradouro" class="form-control TamanhoInput" type="text" value="@(ViewBag.Detalhes.Logradouro)" readonly />
+                        <input id="logradouro" name="logradouro" class="form-control TamanhoInput" type="text" value="@(ViewBag.Detalhes.Endereco.Logradouro)" readonly />
                     </div>
                     <div class="form-group LarguraInput">
                         <label for="UF">UF</label>
-                        <input class="form-control" readonly="readonly" value="@(ViewBag.Detalhes.UF)" />
+                        <input class="form-control" readonly="readonly" value="@(ViewBag.Detalhes.UF.UF_)" />
                     </div>
                     <div class="form-group LarguraInput">
                         <label for="cidade">Cidade</label>
-                        <input class="form-control" type="text" value="@(ViewBag.Detalhes.Municipio)" readonly />
+                        <input class="form-control" type="text" value="@(ViewBag.Detalhes.Cidade.Municipio)" readonly />
                     </div>
                     <div class="form-group LarguraInput">
                         <label for="agencia">Agência</label>
-                        <input class="form-control" id="agencia" name="agencia" type="text" value="@(ViewBag.Detalhes.Agencia)" readonly />
+                        <input class="form-control" id="agencia" name="agencia" type="text" value="@(ViewBag.Detalhes.Conta.Agencia)" readonly />
                     </div>
                     <div class="form-group LarguraInput">
                         <label for="conta">Conta</label>
-                        <input class="form-control" id="conta" name="conta" type="text" value="@(ViewBag.Detalhes.Conta)" readonly />
+                        <input class="form-control" id="conta" name="conta" type="text" value="@(ViewBag.Detalhes.Conta.Conta_)" readonly />
                     </div>
                     <div class="form-group">
                         <button class="btn btn-info" id="btAlterar" onclick="isCadastrar();">Alterar</button>
@@ -320,7 +318,7 @@
 
             @*COMEÇO DIV ALTERAR*@
             <div id="Alterar" style="display:none;">
-                <form method="post" action="/Estabelecimento/AlterarEstabelecimento/@(ViewBag.Detalhes.idEstabelecimento)">
+                <form method="post" action="/Estabelecimento/AlterarEstabelecimento/@(ViewBag.Detalhes.Estabelecimento.idEstabelecimento)">
                     <div class="col-lg-8">
 
                         <div class="alert alert-warning" role="alert">
@@ -351,15 +349,15 @@
                         <div>
                             <div class="form-group">
                                 <label for="RazaoSocial">Razão social*</label>
-                                <input id="RazaoSocial" name="RazaoSocial" type="text" class="form-control TamanhoInput" value="@(ViewBag.Detalhes.razaoSocial)" required />
+                                <input id="RazaoSocial" name="RazaoSocial" type="text" class="form-control TamanhoInput" value="@(ViewBag.Detalhes.Estabelecimento.razaoSocial)" required />
                             </div>
                             <div class="form-group">
                                 <label for="NomeFantasia">Nome fantasia</label>
-                                <input id="NomeFantasia" name="NomeFantasia" type="text" class="form-control TamanhoInput" value="@(ViewBag.Detalhes.nomeFantasia)" />
+                                <input id="NomeFantasia" name="NomeFantasia" type="text" class="form-control TamanhoInput" value="@(ViewBag.Detalhes.Estabelecimento.nomeFantasia)" />
                             </div>
                             <div class="form-group">
                                 <label for="CNPJ">CNPJ*</label>
-                                <input id="CNPJ" name="CNPJ" class="form-control TamanhoInput" type="text" value="@(ViewBag.Detalhes.CNPJ)" required maxlength="18" onkeyup="formatar('##.###.###/####-##', this)" onchange="is_cnpj()" />
+                                <input id="CNPJ" name="CNPJ" class="form-control TamanhoInput" type="text" value="@(ViewBag.Detalhes.Estabelecimento.CNPJ)" required maxlength="18" onkeyup="formatar('##.###.###/####-##', this)" onchange="is_cnpj()" />
                             </div>
                             <div>
                                 <table class="table table-striped table-bordered table-hover table-condensed">
@@ -422,7 +420,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="DataCadastro">Data de cadastro</label>
-                                <p id="DataCadastro">@(ViewBag.Detalhes.dataCadastro)</p>
+                                <p id="DataCadastro">@(ViewBag.Detalhes.Estabelecimento.dataCadastro)</p>
                             </div>
                         </div>
                     </div>
@@ -431,7 +429,7 @@
                         <div class="form-group">
                             <label for="DataCadastro">Categoria*</label>
                             <select id="categoria" name="categoria" class="form-control" onchange="ConfereCategoria(this)">
-                                <option value="@(ViewBag.Detalhes.idCategoria)" selected>@(ViewBag.Detalhes.nomeCategoria)</option>
+                                <option value="@(ViewBag.Detalhes.Categoria.idCategoria)" selected>@(ViewBag.Detalhes.Categoria.nomeCategoria)</option>
                                 @foreach (var C in ViewBag.ListaCategoria)
                                 {
                                     <option value="@(C.idCategoria)">@(C.nomeCategoria)</option>
@@ -442,7 +440,7 @@
                         <div class="form-group">
                             <label for="DataCadastro">Status*</label>
                             <select id="Status" name="status" class="form-control">
-                                <option value="@(ViewBag.Detalhes.idStatus)" selected>@(ViewBag.Detalhes.nomeStatus)</option>
+                                <option value="@(ViewBag.Detalhes.Status.idStatus)" selected>@(ViewBag.Detalhes.Status.nomeStatus)</option>
                                 @foreach (var S in ViewBag.ListaStatus)
                                 {
                                     <option value="@(S.idStatus)">@(S.nomeStatus)</option>
@@ -452,12 +450,12 @@
                         </div>
                         <div class="form-group">
                             <label for="logradouro">Logradouro</label>
-                            <input id="logradouro" name="logradouro" class="form-control TamanhoInput" type="text" value="@(ViewBag.Detalhes.Logradouro)" />
+                            <input id="logradouro" name="logradouro" class="form-control TamanhoInput" type="text" value="@(ViewBag.Detalhes.Endereco.Logradouro)" />
                         </div>
                         <div class="form-group" style="float:left; width:49%;">
                             <label for="UF">UF*</label>
                             <select id="UF" name="UF" class="form-control">
-                                <option value="@(ViewBag.Detalhes.idUF)" selected>@(ViewBag.Detalhes.UF)</option>
+                                <option value="@(ViewBag.Detalhes.UF.idUF)" selected>@(ViewBag.Detalhes.UF.UF_)</option>
                                 @foreach (var UF in ViewBag.ListaEstados)
                                 {
                                     <option value="@(UF.idUF)">@(UF.UF_ + '(' + UF.Sigla + ')')</option>
@@ -468,17 +466,17 @@
                         <div class="form-group" style="float:right; width:49%;">
                             <label for="cidade">Cidade*</label>
                             <select id="idCidade" name="idCidade" class="form-control">
-                                <option value="@(ViewBag.Detalhes.idCidade)" selected>@(ViewBag.Detalhes.Municipio)</option>
+                                <option value="@(ViewBag.Detalhes.Cidade.idCidade)" selected>@(ViewBag.Detalhes.Cidade.Municipio)</option>
                             </select>
-                            <input hidden name="idEndereco" value="@(ViewBag.Detalhes.idEndereco)" />
+                            <input hidden name="idEndereco" value="@(ViewBag.Detalhes.Endereco.idEndereco)" />
                         </div>
                         <div class="form-group LarguraInput">
                             <label for="agencia">Agência</label>
-                            <input class="form-control" id="agencia" name="agencia" type="text" value="@(ViewBag.Detalhes.Agencia)" maxlength="5" onkeyup="formatar('###-#', this)" />
+                            <input class="form-control" id="agencia" name="agencia" type="text" value="@(ViewBag.Detalhes.Conta.Agencia)" maxlength="5" onkeyup="formatar('###-#', this)" />
                         </div>
                         <div class="form-group LarguraInput">
                             <label for="conta">Conta</label>
-                            <input class="form-control" id="conta" name="conta" type="text" value="@(ViewBag.Detalhes.Conta)" maxlength="8" onkeyup="formatar('##.###-#', this)" />
+                            <input class="form-control" id="conta" name="conta" type="text" value="@(ViewBag.Detalhes.Conta.Conta_)" maxlength="8" onkeyup="formatar('##.###-#', this)" />
                         </div>
 
                         <div class="form-group">
@@ -517,7 +515,7 @@
                             <div class="form-group">
                                 <label for="telefone">Telefone</label>
                                 <input class="form-control" id="telefone" name="telefone" type="text" placeholder="Digite o Numero" maxlength="9" onkeyup="formatar('####-####', this)" />
-                                <input name="id_Estabelecimento" type="text" value="@(ViewBag.Detalhes.idEstabelecimento)" hidden="hidden" />
+                                <input name="id_Estabelecimento" type="text" value="@(ViewBag.Detalhes.Estabelecimento.idEstabelecimento)" hidden="hidden" />
                             </div>
                         </div>
                     </div>

@@ -41,7 +41,7 @@
                                         + "<td>" + item.nomeFantasia + "</td>"
                                         + "<td>" + item.CNPJ + "</td>"
                                         + "<td>" + item.dataCadastro + "</td>"
-                                        + "<td>" + item.Status + "</td>"
+                                        + "<td>" + item.Status.nomeStatus + "</td>"
 
                                         + "<td> <a href=/Estabelecimento/DetalhesEstabelecimento/" + item.idEstabelecimento + "><i style='font-size: 16pt;' class='glyphicon glyphicon-list-alt' title='Detalhes'></i></a></td>"
                                         + "<td> <a href=/Estabelecimento/ExcluirEstabelecimento/" + item.idEstabelecimento + "><i style='font-size: 16pt; color:red;' class='glyphicon glyphicon-remove' title='Remover'></i></a></td>"
@@ -135,7 +135,7 @@
                                 <td>@(E.nomeFantasia)</td>
                                 <td>@(E.CNPJ)</td>
                                 <td>@(E.dataCadastro)</td>
-                                <td>@(E.Status)</td>
+                                <td>@(E.Status.nomeStatus)</td>
 
                                 <td>
                                     <a href="/Estabelecimento/DetalhesEstabelecimento/@(E.idEstabelecimento)">

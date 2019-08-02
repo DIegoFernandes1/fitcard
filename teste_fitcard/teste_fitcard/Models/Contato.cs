@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Runtime.InteropServices;
 
 namespace teste_fitcard.Models
 {
     public class Contato
     {
-        public Int32 id_Estabelecimento { get; set; }
+        public Estabelecimento Estabelecimento { get; set; } = new Estabelecimento();
         public Int32 idContato { get; set; }
         public String Email { get; set; }
         public String DDD { get; set; }
         public String Numero { get; set; }
 
-        public Contato() { }
+        public Contato(){  }
 
         public Contato(Int32 idContato)
         {
@@ -33,7 +30,7 @@ namespace teste_fitcard.Models
             Leitor.Read();
 
             this.idContato = Convert.ToInt32(Leitor["idContato"].ToString());
-            this.id_Estabelecimento = Convert.ToInt32(Leitor["id_estabelecimento"].ToString());
+            this.Estabelecimento.idEstabelecimento = Convert.ToInt32(Leitor["id_estabelecimento"].ToString());
             this.Email = Leitor["Email"].ToString();
             this.DDD = Leitor["DDD"].ToString();
             this.Numero = Leitor["Numero"].ToString();
@@ -75,8 +72,8 @@ namespace teste_fitcard.Models
 
             Comando.CommandText = "UPDATE Contato SET Email = @Email, DDD = @DDD, Numero = @Numero WHERE idContato = @idContato;";
             Comando.Parameters.AddWithValue("@Email", this.Email);
-            Comando.Parameters.AddWithValue("@DDD",this.DDD);
-            Comando.Parameters.AddWithValue("@Numero",this.Numero);
+            Comando.Parameters.AddWithValue("@DDD", this.DDD);
+            Comando.Parameters.AddWithValue("@Numero", this.Numero);
             Comando.Parameters.AddWithValue("@idContato", ID);
 
             Int32 ResultadoContato = Comando.ExecuteNonQuery();

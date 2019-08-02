@@ -80,7 +80,7 @@
                     <div class="form-group">
                         <label for="telefone">Telefone</label>
                         <input class="form-control" id="telefone" name="telefone" type="text" value="@(ViewBag.Contato.Numero)" maxlength="9" onkeyup="formatar('####-####', this)" />
-                        <input name="id_Estabelecimento" type="text" value="@(ViewBag.Contato.id_Estabelecimento)" hidden="hidden" />
+                        <input name="id_Estabelecimento" type="text" value="@(ViewBag.Contato.Estabelecimento.idEstabelecimento)" hidden="hidden" />
                     </div>
                 </div>
             </div>
@@ -88,7 +88,7 @@
             <div class="row">
                 <div class="form-group col-lg-4">
                     <button id="btnAltCont" class="btn btn-success" onclick="~/Contato/AlterarContato/@(ViewBag.Contato.idContato)">Alterar</button>
-                    <a href="/Estabelecimento/DetalhesEstabelecimento/@(ViewBag.Contato.id_Estabelecimento)"><button type="button" class="btn btn-warning">Voltar</button></a>
+                    <a href="/Estabelecimento/DetalhesEstabelecimento/@(ViewBag.Contato.Estabelecimento.idEstabelecimento)"><button type="button" class="btn btn-warning">Voltar</button></a>
                 </div>
             </div>
         </form>

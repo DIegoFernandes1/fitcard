@@ -133,6 +133,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Categoria.cs" />
+    <Compile Include="Models\Cidade.cs" />
     <Compile Include="Models\Conta.cs" />
     <Compile Include="Models\Contato.cs" />
     <Compile Include="Models\Endereco.cs" />
