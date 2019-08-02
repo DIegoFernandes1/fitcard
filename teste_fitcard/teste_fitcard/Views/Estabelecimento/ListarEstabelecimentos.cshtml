@@ -6,7 +6,8 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/css/StyleSheet.css?ver=1" rel="stylesheet" type="text/css" />
+    <link href="~/css/StyleSheet.css?ver=2" rel="stylesheet" type="text/css" />
+    <link rel="icon" href="~/imagens/estabelecimento_favicon.ico" />
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
@@ -64,11 +65,11 @@
                 )
             });
         });
-            // FIM BARRA DE PESQUISA
+        // FIM BARRA DE PESQUISA
 
-        //confirmação de deleção
+        //CONFIRMAÇÃO DE DELEÇÃO
         function Deletar(id) {
-            var opcao = confirm("Deseja realmente apagar esse estabelecimento de ID: " + id+"?");
+            var opcao = confirm("Deseja realmente apagar esse estabelecimento de ID: " + id + "?");
 
             if (opcao) {
                 $.ajax({
@@ -113,16 +114,16 @@
                     </div>
                 }
 
-                <table class="table table-striped table-bordered table-hover table-condensed">
+                <table class="table table-striped table-bordered table-hover table-condensed TableHeader">
                     <thead>
                         <tr class="success">
-                            <th>ID</th>
-                            <th>Razão Social</th>
-                            <th>Nome Fantasia</th>
-                            <th>CNPJ</th>
-                            <th>Data Cadastro</th>
-                            <th>Status</th>
-                            <th colspan="2">Ações</th>
+                            <th class="TableHeader">ID</th>
+                            <th class="TableHeader">Razão Social</th>
+                            <th class="TableHeader">Nome Fantasia</th>
+                            <th class="TableHeader">CNPJ</th>
+                            <th class="TableHeader">Data Cadastro</th>
+                            <th class="TableHeader">Status</th>
+                            <th class="TableHeader" colspan="2">Ações</th>
                         </tr>
                     </thead>
 
@@ -165,16 +166,16 @@
                     </div>
                 }
 
-                <table class="table table-striped table-bordered table-hover table-condensed" id="Tcabecalho">
+                <table class="table table-striped table-bordered table-hover table-condensed TableHeader" id="Tcabecalho">
                     <thead>
                         <tr class="success">
-                            <th>ID</th>
-                            <th>Razão Social</th>
-                            <th>Nome Fantasia</th>
-                            <th>CNPJ</th>
-                            <th>Data Cadastro</th>
-                            <th>Status</th>
-                            <th colspan="2">Ações</th>
+                            <th class="TableHeader">ID</th>
+                            <th class="TableHeader">Razão Social</th>
+                            <th class="TableHeader">Nome Fantasia</th>
+                            <th class="TableHeader">CNPJ</th>
+                            <th class="TableHeader">Data Cadastro</th>
+                            <th class="TableHeader">Status</th>
+                            <th class="TableHeader" colspan="2">Ações</th>
                         </tr>
                     </thead>
                     <tbody id="TablePesquisa"></tbody>
