@@ -186,6 +186,7 @@
             var status = document.getElementById("status");
             var uf = document.getElementById("uf");
             var cidade = document.getElementById("cidade");
+            var telefoneOpcao = true;
 
             //if generico que retorna em uma variavel só o resultado de outros elementos
             if (status.options[status.selectedIndex].value == "Status do estabelecimento" || uf.options[uf.selectedIndex].value == "UF" || cidade.options[cidade.selectedIndex].value == "cidade" || cidade.options[cidade.selectedIndex].value == "") {
@@ -193,16 +194,25 @@
             } else {
                 status = 1;
             }
+            
+            if (document.getElementById("ddd").value == "" && document.getElementById("telefone").value == "") {
+                telefoneOpcao = true;
+            } else if (document.getElementById("ddd").value == "" || document.getElementById("telefone").value == "") {
+                alert("Não é possivel cadastrar somente DDD ou Telefone")
+                telefoneOpcao = false;
+            } else {
+                telefoneOpcao = true;
+            }
 
             if (validateEmail() == 1 || document.getElementById("email").value == "" || document.getElementById("email").value == " ") {
                 email = 1;
             }
 
             //ação de cadastrar
-            if (razaoSocial != "" && document.getElementById("CNPJ").style.borderColor == "green" && ConfereCategoria(0) == 1 && status == 1 && email == 1) {
+            if (razaoSocial != "" && document.getElementById("CNPJ").style.borderColor == "green" && ConfereCategoria(0) == 1 && status == 1 && email == 1 && telefoneOpcao == true) {
                 document.formularioCad.submit();
             } else {
-                alert("Ainda existem campos obrigatórios em branco.")
+                alert("Ainda existem campos obrigatórios branco.")
             }
         }
 
@@ -300,7 +310,7 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="telefone">Telefone</label>
-                            <input class="form-control" id="telefone" name="telefone" type="text" placeholder="Digite o telefone" maxlength="9" onkeyup="formatar('####-####', this)" onchange="ConfereCategoria(0);" />
+                            <input class="form-control" id="telefone" name="telefone" type="text" placeholder="Digite o telefone" maxlength="10" onkeyup="formatar('#####-####', this)" onchange="ConfereCategoria(0);" />
                         </div>
                     </div>
 
